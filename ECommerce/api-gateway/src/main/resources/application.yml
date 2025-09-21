@@ -1,0 +1,32 @@
+server:
+  port: 9191
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true  # URLs will be like /user-service/**
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/usermgmt/**
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/productmgmt/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/ordermgmt/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

@@ -1,0 +1,39 @@
+spring.application.name=API-GATEWAY
+server.port=9191
+
+eureka.instance.client.serverUrl.defaultZone=http://localhost:8761/eureka/
+management.endpoints.web.exposure.include=*
+
+#spring.cloud.gateway.discovery.locator.enabled=true
+#spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+#logging.level.org.springframework.cloud.gateway.handler.RoutePredicateHandlerMapping=DEBUG
+
+##route for employee service
+spring.cloud.gateway.routes[0].id=EMPLOYEE-SERVICE
+spring.cloud.gateway.routes[0].uri=lb://EMPLOYEE-SERVICE
+spring.cloud.gateway.routes[0].predicates[0]=Path=/api/employee/**
+
+##route for department service
+spring.cloud.gateway.routes[1].id=DEPARTMENT-SERVICE
+spring.cloud.gateway.routes[1].uri=lb://DEPARTMENT-SERVICE
+spring.cloud.gateway.routes[1].predicates[0]=Path=/api/department/**
+
+##route for organization service
+spring.cloud.gateway.routes[2].id=ORGANIZATION-SERVICE
+spring.cloud.gateway.routes[2].uri=lb://ORGANIZATION-SERVICE
+spring.cloud.gateway.routes[2].predicates[0]=Path=/api/organization/**
+
+
+management.tracing.sampling.probability=1.0 
+logging.pattern.level=%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
+logging.level.org.springframework.web=DEBUG
+
+#zipkin property
+spring.zipking.base.url=http://127.0.0.1:9411/
+
+
+#spring cloud api gateway cors-configuration
+spring.cloud.gateway.globalcors.cors-configurations.[/**].allowedOrigins=*
+spring.cloud.gateway.globalcors.cors-configurations.[/**].allowedMethods=GET,POST,PUT,DELETE
+
+kafka.topic = "test"
